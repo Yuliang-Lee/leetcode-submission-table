@@ -1,0 +1,32 @@
+{
+  "name": "leetcode-submission-table",
+  "version": "1.0.0",
+  "description": "fetch your leetCode submissions and show in the table",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "xlaoyu <frank_yll@163.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/Yuliang-Lee/leetcode-submission-table.git"
+  },
+  "keywords": [
+    "vue",
+    "leetCode",
+    "submissions"
+  ],
+  "bugs": {
+    "url": "https://github.com/Yuliang-Lee/leetcode-submission-table/issues"
+  },
+  "homepage": "https://github.com/Yuliang-Lee/leetcode-submission-table#readme",
+  "dependencies": {
+    "koa": "^2.5.0",
+    "koa-router": "^7.4.0",
+    "koa-static": "^4.0.2",
+    "koa-views": "^6.1.4",
+    "puppeteer": "^1.3.0",
+    "qs": "^6.5.1"
+  }
+}

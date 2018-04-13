@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <!-- import CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/element-ui@2.3.3/lib/theme-chalk/index.css">
+  <style>
+    #app {
+      width: 1200px;
+      margin: 50px auto;
+    }
+    .status {
+      font-weight: 700;
+      color: #d05451;
+    }
+    .status.success {
+      color: #449d44;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <el-card>
+      <h3>leetCode submissions</h3>
+      <el-form :model="filter" inline size="small">
+        <el-form-item label="lang: ">
+            <el-select v-model="filter.lang" clearable placeholder="filter by language">
+              <el-option v-for="lan in langs" :key="lan" :value="lan" :label="lan"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="status: ">
+            <el-select v-model="filter.status" clearable placeholder="filter by status">
+              <el-option v-for="sta in status" :key="sta" :value="sta" :label="sta"></el-option>
+            </el-select>
+        </el-form-item>
+        <el-form-item label="name: ">
+          <el-input v-model="filter.name" placeholder="filter by name"></el-input>
+        </el-form-item>
+        <el-form-item style="float: right">
+          <el-button round type="success">Solved: <strong>{{ solved }}</strong></el-button>
+          <el-button round type="primary">Accepted: <strong>{{ accepted.length }}</strong></el-button>
+          <el-button round>total: <strong>{{ total }}</strong></el-button>
+        </el-form-item>
+      </el-form>
+
+      <el-table :data="submissions">
+        <el-table-column label="#" type="index" width="60"></el-table-column>
+        <el-table-column label="Time Submitted" prop="time"></el-table-column>
+        <el-table-column label="Question" prop="title"></el-table-column>
+        <el-table-column label="Status">
+          <template slot-scope="{ row }">
+            <a :href="'https://leetcode.com' + row.url" class="status" :class="{success: row.status_display === 'Accepted'}" target="_blank">{{ row.status_display }}</a>
+          </template>
+        </el-table-column>
+        <el-table-column label="Runtime" prop="runtime"></el-table-column>
+        <el-table-column label="Language" prop="lang"></el-table-column>
+      </el-table>
+    </el-card>
+  </div>
+</body>
+  <!-- import Vue before Element -->
+  <script src="https://unpkg.com/vue/dist/vue.js"></script>
+  <!-- import JavaScript -->
+  <script src="https://unpkg.com/element-ui@2.3.3/lib/index.js"></script>
+  <script src="https://unpkg.com/vue-resource@1.5.0/dist/vue-resource.min.js"></script>
+  <script>
+    new Vue({
+      el: '#app',
+      data: function() {
+        return {
+          origin: [],
+          langs: [],
+          status: [],
+          filter: {
+            lang: '',
+            status: '',
+            name: ''
+          }
+        };
+      },
+      computed: {
+        total() {
+          return this.origin.length;
+        },
+        accepted() {
+          return this.origin.filter(sub => sub.status_display === 'Accepted');
+        },
+        solved() {
+          const solved = new Set();
+          this.accepted.forEach(a => solved.add(a.title));
+          return solved.size;
+        },
+        submissions() {
+          const name = this.filter.name.trim();
+          return this.origin.filter(o => {
+            return this.filter.lang ? this.filter.lang === o.lang : true;
+          }).filter(o => {
+            return this.filter.status ? this.filter.status === o.status_display : true;
+          }).filter(o => {
+            return name ? o.title.indexOf(name) > -1 : true;
+          });
+        }
+      },
+      created() {
+        this.fetchData();
+      },
+      methods: {
+        fetchData() {
+          this.$http.get('/api/submissions')
+          .then(function (resp) {
+            console.log(resp);
+            if (resp.body.code === 200) {
+              const langs = new Set();
+              const status = new Set();
+              this.origin = resp.body.data;
+              this.origin.forEach(sub => {
+                langs.add(sub.lang);
+                status.add(sub.status_display);
+              });
+              this.langs = Array.from(langs);
+              this.status = Array.from(status);
+
+              console.log(this.origin)
+            } else {
+              this.$notify.error({
+                title: '错误',
+                message: resp.body.msg
+              });
+            }
+          })
+          .catch(function (error) {
+            this.$notify.error({
+              title: '错误',
+              message: error
+            });
+          });
+        }
+      }
+    })
+  </script>
+  
+</html>
