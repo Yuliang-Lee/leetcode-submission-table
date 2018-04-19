@@ -2,8 +2,11 @@ const Koa = require('koa');
 const Router = require('koa-router');
 const serve = require('koa-static');
 const views = require('koa-views');
+const ora = require('ora');
+const chalk = require('chalk');
 
-const { getSubmissions } = require('./lib/crawler');
+const config = require('./config');
+const { init, getSubmissions } = require('./lib/crawler');
 
 const app = new Koa();
 const router = new Router();
@@ -16,8 +19,8 @@ app.use(views(__dirname + '/statics', {
 }));
 
 router.get('/', async (ctx) => {
-  await ctx.render('index')
-})
+  await ctx.render('index');
+});
 
 router.get('/api/submissions', async (ctx) => {
   const result = {
@@ -30,7 +33,7 @@ router.get('/api/submissions', async (ctx) => {
   } catch (e) {
     result.code = 500;
     result.msg = e.message;
-    console.log(e)
+    console.error(e);
   }
   ctx.body = result;
 });
@@ -38,7 +41,16 @@ router.get('/api/submissions', async (ctx) => {
 app.use(serve(__dirname + '/statics'));
 app.use(router.routes()).use(router.allowedMethods());
 
-// server start
-app.listen(3000, () => {
-  console.log('Server started. Please wait...');
-});
+// 直接运行代码，启动服务
+if(require.main === module) {
+  // server start
+  const spinner = ora('Server starting...').start();
+  app.listen(config.port, () => {
+    spinner.succeed('Server start successed!');
+  });
+  init(config);
+}
+
+module.exports = {
+  app
+};

@@ -1,5 +1,6 @@
 {
   "username": "bidiu",
   "password": "biu~",
-  "headless": true
+  "headless": false,
+  "port": "3000"
 }

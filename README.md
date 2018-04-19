@@ -20,34 +20,44 @@ leetCode's submissions history page does't offer filter function, it's very inco
 
 ```bash
 # download project
-~$ git clone git@github.com:Yuliang-Lee/leetcode-submission-table.git
-~$ cd leetcode-submission-table
-~/leetcode-submission-table $ npm install
-```
-
-### Config
-
-open the root `config.json` file, input your leetCode username and pwd.
-
-```json
-{
-  "username": "bidiu",
-  "password": "biu~",
-  "headless": false
-}
+~$ npm install -g @xlaoyu/leetcode-submission-table
 ```
 
 ### Start
 
 ```bash
-~/leetcode-submission-table $ npm run start
+~ $ lst -u username -p password
+
+# or
+
+~ $ lst -c config.json
 
 # console will output
-Server started. Please wait...
-logging...
-login success!
+✔ Server start successed!
+✔ login success!
 please visit http://127.0.0.1:3000
 ```
+
+### Config
+
+| name | short name | default | desc |
+|:----:|:----:|:----:|:----:|
+| username | u | - | leetcode's username |
+| password | p | - | leetcode's pwd |
+| port | t | 3000 | local server port |
+| config | c | - | specify config file |
+| headless | l | true | whether use headless mode |
+
+`config file example`
+```json
+{
+  "username": "bidiu",
+  "password": "biu~",
+  "port": "3000",
+  "headless: true
+}
+```
+
 
 
 ## Screenshot
