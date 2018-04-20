@@ -1,6 +1,7 @@
 # leetCode submission table
 
 [![license](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/Yuliang-Lee/vue2-smooth-scroll/blob/master/LICENSE)
+[![npm](https://img.shields.io/npm/v/@xlaoyu/leetcode-submission-table.svg)](https://www.npmjs.com/package/@xlaoyu/leetcode-submission-table)
 
 
 > Use crawlers to get all submitted records, use tables to display, add filtering.
