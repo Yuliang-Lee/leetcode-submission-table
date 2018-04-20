@@ -39,8 +39,8 @@
         </el-form-item>
         <el-form-item style="float: right">
           <el-button round type="success">Solved: <strong>{{ solved }}</strong></el-button>
-          <el-button round type="primary">Accepted: <strong>{{ accepted.length }}</strong></el-button>
-          <el-button round>total: <strong>{{ total }}</strong></el-button>
+          <el-button round type="primary" @click="filter.status = 'Accepted'">Accepted: <strong>{{ accepted.length }}</strong></el-button>
+          <el-button round @click="filter.status = ''">total: <strong>{{ total }}</strong></el-button>
         </el-form-item>
       </el-form>
 
@@ -107,9 +107,7 @@
       },
       methods: {
         fetchData() {
-          this.$http.get('/api/submissions')
-          .then(function (resp) {
-            console.log(resp);
+          this.$http.get('/api/submissions').then(function (resp) {
             if (resp.body.code === 200) {
               const langs = new Set();
               const status = new Set();
@@ -121,15 +119,13 @@
               this.langs = Array.from(langs);
               this.status = Array.from(status);
 
-              console.log(this.origin)
             } else {
               this.$notify.error({
                 title: '错误',
                 message: resp.body.msg
               });
             }
-          })
-          .catch(function (error) {
+          }).catch(function (error) {
             this.$notify.error({
               title: '错误',
               message: error
