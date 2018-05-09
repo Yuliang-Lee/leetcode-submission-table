@@ -47,7 +47,11 @@
       <el-table :data="submissions">
         <el-table-column label="#" type="index" width="60"></el-table-column>
         <el-table-column label="Time Submitted" prop="time"></el-table-column>
-        <el-table-column label="Question" prop="title"></el-table-column>
+        <el-table-column label="Question" prop="title">
+          <template slot-scope="{ row }">
+            <a :href="row.questionUrl" target="_blank">{{ row.title }} </a>
+          </template>
+        </el-table-column>
         <el-table-column label="Status">
           <template slot-scope="{ row }">
             <a :href="'https://leetcode.com' + row.url" class="status" :class="{success: row.status_display === 'Accepted'}" target="_blank">{{ row.status_display }}</a>
@@ -115,6 +119,7 @@
               this.origin.forEach(sub => {
                 langs.add(sub.lang);
                 status.add(sub.status_display);
+                sub.questionUrl = `https://leetcode.com/problems/${sub.title.toLowerCase().replace(/\s/g, '-')}/description/`;
               });
               this.langs = Array.from(langs);
               this.status = Array.from(status);
