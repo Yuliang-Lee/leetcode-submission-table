@@ -1,6 +1,6 @@
 {
   "name": "@xlaoyu/leetcode-submission-table",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "fetch your leetCode submissions and show in the table",
   "private": false,
   "main": "index.js",
